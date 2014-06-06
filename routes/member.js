@@ -60,7 +60,7 @@ router.post('/add',function(req, res){
         req.body.comments,req.session.user.name, function (err, member) {
             if (err) {
                 req.flash('error', err);
-                return res.redirect('/member/list');
+                return res.redirect('/member/index');
             }
             req.flash('success', '成员加入成功');
             res.redirect('/member/index');
@@ -121,7 +121,27 @@ router.get('/modifyPage', function (req, res, next) {
  * 成员修改
  */
 router.post('/modify',function(req, res){
+    //根据_id获取成员信息
+    var query = { _id: req.body._id };
+    var set = {
+        name:req.body.name,
+        title:req.body.title,
+        birthday:req.body.birthday,
+        stature:req.body.stature,
+        weight:req.body.weight,
+        circumference:req.body.circumference,
+        waistline:req.body.waistline,
+        shoeSize:req.body.shoeSize,
+        comments:req.body.comments};
 
+    Member.modifyMember(query,set,function(err,member){
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('/member/index');
+        }
+        req.flash('success', '成员修改成功');
+        res.redirect('/member/index');
+    });
 });
 
 /**

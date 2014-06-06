@@ -58,8 +58,6 @@ body {
                         %><tr class="success"><%
                             }
                             %>
-                            <!--编辑删除时使用-->
-                            <div id="_id" _id="<%= m._id %>"></div>
 
                             <td><%= index+1 %></td>
                             <td>
@@ -77,7 +75,7 @@ body {
                             <td><%= m.create_at_str %></td>
                             <td>
                                 <div class="btn-group-vertical btn-group-sm">
-                                    <button type="button" class="btn btn-primary " onclick="modifyPage();">修改</button>
+                                    <button type="button" class="btn btn-primary " onclick="modifyPage('<%=m._id%>');">修改</button>
                                     <button type="button" class="btn btn-warning" onclick="delet();">删除</button>
                                 </div>
                             </td>
@@ -123,10 +121,8 @@ body {
 <div id="result"></div>
 <script>
 
-    function modifyPage(){
-        var $nav = $('#_id');
-        var _id = $nav.attr('_id');
-        location.href = "/member/modifyPage?_id="+_id;
+    function modifyPage(id){
+        location.href = "/member/modifyPage?_id="+id;
     }
 
 

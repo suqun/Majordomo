@@ -59,12 +59,12 @@ exports.getMemberById = function (id, callback) {
  * Callback:
  * - err, 数据库错误
  * - member, 成员
- * @param {} qry 成员ID
+ * @param {JSON} qry 查询条件
+ * @param {JSON} set 查询条件
  * @param {Function} callback 回调函数
  */
-exports.getMemberById = function (qry, callback) {
-    //var query = { name: 'borne' };
-    Member.update(qry, { name: 'jason borne' }, [], function (err, member) {
+exports.modifyMember = function (qry,set, callback) {
+    Member.update(qry, set, [], function (err, member) {
         if (err) {
             return callback(err);
         }
