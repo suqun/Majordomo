@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/images/s.jpg">
+
+    <title>Majordomo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/datepicker3.css" rel="stylesheet">
+    <script src="/javascripts/jquery-2.0.3.js"></script>
+
+</head>
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><b>Majordomo</b></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <!-- class=active显示判断，根据url判断 -->
+                    <%
+                    if(locals.url && locals.url === "/"){
+                    %><li class="active"><%}else{%><li><%}%><a href="/">首页</a></li>
+
+                    <%
+                    var regexp  = new RegExp("\/member\/", "g");
+                    if(locals.url && regexp.test(url)){
+                    %><li class="active"><%}else{%><li><%}%><a href="/member/index">成员</a></li>
+
+                    <%
+                    var regexp  = new RegExp("\/account\/", "g");
+                    if(locals.url && regexp.test(url)){
+                    %><li class="active"><%}else{%><li><%}%><a href="#account">账本</a></li>
+
+                    <%
+                    var regexp  = new RegExp("\/health\/", "g");
+                    if(locals.url && regexp.test(url)){
+                    %><li class="active"><%}else{%><li><%}%><a href="#health">健康</a></li>
+
+                    <%
+                    var regexp  = new RegExp("\/plan\/", "g");
+                    if(locals.url && regexp.test(url)){
+                    %><li class="active"><%}else{%><li><%}%><a href="#plan">计划</a></li>
+
+                    <%
+                    var regexp  = new RegExp("\/diary\/", "g");
+                    if(locals.url && regexp.test(url)){
+                    %><li class="active"><%}else{%><li><%}%><a href="#diary">日记</a></li>
+
+
+                </ul>
+                <ul class="nav nav-pills pull-right navbar-nav">
+                    <% if (!locals.user) { %>
+                    <li><a href="/users/reg">注册</a></li>
+                    <li><a href="/users/login">登录</a></li>
+                    <% } else { %>
+                    <li><a href="/" >欢迎您：<%= locals.user.loginname%></a></li>
+                    <li><a href="/users/logout">退出</a></li>
+                    <% } %>
+                </ul>
+                <!--
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../navbar/">Default</a></li>
+                    <li><a href="../navbar-static-top/">Static top</a></li>
+                    <li class="active"><a href="./">Fixed top</a></li>
+                </ul>
+                -->
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+
+
+
+
+
+

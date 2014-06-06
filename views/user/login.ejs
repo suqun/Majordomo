@@ -1,0 +1,77 @@
+<% include ../header.ejs%>
+<!-- Bootstrap -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet" />
+
+<style>
+
+    /* http://css-tricks.com/perfect-full-page-background-image/ */
+    html {
+     background: url(/images/d0485933c1f79639ea4cf05862aa97bc.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    padding-top: 120px;
+    font-size: 16px;
+    font-family: "Open Sans",serif;
+    background: transparent;
+}
+
+h1 {
+    font-family: "Abel", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 40px;
+}
+
+/* Override B3 .panel adding a subtly transparent background */
+    .panel {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .margin-base-vertical {
+        margin: 40px 0;
+    }
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 panel panel-default">
+            <form class="margin-base-vertical" role="form" method="post" action="/users/login">
+                <p class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-user"> </span></span>
+                    <input type="text" class="form-control input-lg" name="loginname" placeholder="Enter your name" />
+                </p>
+                <p class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-paw"> </span></span>
+                    <input type="password" class="form-control input-lg" name="pass" placeholder="Enter Password" />
+                </p>
+                <br>
+
+                    <% if ( locals.success ) {  %>
+                    <div class="alert alert-success"> <%= locals.success %></div>
+                    <% } %>
+                    <% if ( locals.error ) { %>
+                    <div class="alert alert-danger "> <%= locals.error %></div>
+                    <% } %>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg">登陆</button>
+                </div>
+                <br>
+                <p class="help-block text-center"><a href="/users/search-pass">忘记密码了？</a></p>
+            </form>
+
+
+
+        </div><!-- //main content -->
+    </div><!-- //row -->
+</div> <!-- //container -->
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/images/s.jpg">
+
+    <title>Majordomo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/datepicker3.css" rel="stylesheet">
+    <script src="/javascripts/jquery-2.0.3.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script src="/javascripts/bootstrap-datepicker.js"></script>
+    <script src="/javascripts/moment.min.js"></script>
+
+
+    <style>
+
+        body {
+            padding-top: 120px
+        }
+    </style>
+
+    <script>
+
+        $(function(){
+            console.log("============");
+            // jQuery methods go here...
+            var mytime = moment(Date()).format('YYYY-MM-DD');
+            $('#result').text(mytime);
+
+        });
+
+        $('.player-cards .player .shots a').each(function() {
+            $(this).append($('<img>', { src: $(this).data('src') }));
+        });
+    </script>
+</head>
+
+<body>
+
+
+    <div id="result">
+
+    </div>
+
+    <ol class="player-cards">
+        <li class="group">
+            <div class="player-info">
+                <h2 class="vcard">
+                    <a href="" class="url" rel="contact" title="Snipe"><div data-picture data-alt="Creativedash" data-class="photo">Creativedash</div></a>
+                    <span rel="tipsy" class="freeagent-mark" title="Creativedash is available for hire."></span>
+                                    <span class="meta">
+                                         <a href="/designers?location=San+Francisco%2C+CA" class="locality">San Francisco, CA</a>
+                                    </span>
+                                    <span class="meta meta-skills">
+                                         <a href="/skills/ui">ui</a>, <a href="/skills/ux">ux</a>, <a href="/skills/ios">ios</a>, <a href="/skills/icons">icons</a>, <a href="/skills/web_design">web design</a>, <a href="/skills/3d">3d</a>
+                                    </span>
+                </h2>
+                <ul class="player-stats group">
+                    <li class="stat-shots">
+                        <a href="/teams/Creativedash">
+                            <span class="meta">shots</span>
+                        </a>  </li>
+
+                    <li class="stat-followers">
+                        <a href="/Creativedash/followers">
+                            <span class="meta">followers</span>
+                        </a>  </li>
+                </ul>
+            </div>
+
+        </li>
+
+    </ol>
+
+
+</body>
+</html>
