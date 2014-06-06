@@ -73,6 +73,23 @@ exports.modifyMember = function (qry,set, callback) {
 };
 
 /**
+ * 根据条件修改成员
+ * Callback:
+ * - err, 数据库错误
+ * - member, 成员
+ * @param {JSON} qry 查询条件
+ * @param {Function} callback 回调函数
+ */
+exports.deleteMember = function (qry,callback) {
+    Member.remove(qry, function (err) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(null);
+    });
+};
+
+/**
  * 添加成员
  * Callback:
  * - err, 数据库异常

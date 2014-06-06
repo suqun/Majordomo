@@ -76,7 +76,7 @@ body {
                             <td>
                                 <div class="btn-group-vertical btn-group-sm">
                                     <button type="button" class="btn btn-primary " onclick="modifyPage('<%=m._id%>');">修改</button>
-                                    <button type="button" class="btn btn-warning" onclick="delet();">删除</button>
+                                    <button type="button" class="btn btn-warning" onclick="deleteMember('<%=m._id%>');">删除</button>
                                 </div>
                             </td>
                         </tr>
@@ -121,14 +121,18 @@ body {
 <div id="result"></div>
 <script>
 
+    //修改页面
     function modifyPage(id){
         location.href = "/member/modifyPage?_id="+id;
     }
 
+    //删除member
+    function deleteMember(id){
+        location.href = "/member/deleteMember?_id="+id;
+    }
+
 
     $(function(){
-
-        // jQuery methods go here...
         /** 日期 **/
         $('#birthday').datepicker({
             todayBtn: "linked",
@@ -152,9 +156,6 @@ body {
             }
         }
         $('#page1').bootstrapPaginator(options);
-
-
-
     });
 </script>
 

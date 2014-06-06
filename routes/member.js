@@ -1,5 +1,5 @@
 /**
- * Created by SnipeV5 on 14-5-26.
+ * Created by LarrySu on 14-5-26.
  */
 var express = require('express');
 var router = express.Router();
@@ -132,7 +132,8 @@ router.post('/modify',function(req, res){
         circumference:req.body.circumference,
         waistline:req.body.waistline,
         shoeSize:req.body.shoeSize,
-        comments:req.body.comments};
+        comments:req.body.comments
+    };
 
     Member.modifyMember(query,set,function(err,member){
         if (err) {
@@ -145,23 +146,21 @@ router.post('/modify',function(req, res){
 });
 
 /**
- * 成员信息列表--index方法代替
+ * 成员删除
+ */
+router.get('/deleteMember',function(req, res){
+    //根据_id获取成员信息
+    var query = { _id: req.query._id };
 
-router.get('/list', function (req, res) {
-    //查询当前用户下的成员信息
-    Member.getMembersByQuery({"create_un": req.session.user.name}, {}, function (err, members) {
+    Member.deleteMember(query,function(err){
         if (err) {
-            return next(err);
+            req.flash('error', err);
+            return res.redirect('/member/index');
         }
-        //日期格式化
-        for(var i=0; i<members.length;i++){
-            var member = members[i];
-            member.create_at_str = new moment(members[i].create_at).format('YYYY/MM/DD');
-        }
-        res.render('./member/member', {
-            members: members
-        });
+        req.flash('success', '成员删除成功');
+        res.redirect('/member/index');
     });
-});*/
+});
+
 
 module.exports = router;
