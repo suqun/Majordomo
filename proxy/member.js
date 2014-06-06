@@ -55,6 +55,24 @@ exports.getMemberById = function (id, callback) {
 };
 
 /**
+ * 根据条件修改成员
+ * Callback:
+ * - err, 数据库错误
+ * - member, 成员
+ * @param {} qry 成员ID
+ * @param {Function} callback 回调函数
+ */
+exports.getMemberById = function (qry, callback) {
+    //var query = { name: 'borne' };
+    Member.update(qry, { name: 'jason borne' }, [], function (err, member) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(null, member);
+    });
+};
+
+/**
  * 添加成员
  * Callback:
  * - err, 数据库异常

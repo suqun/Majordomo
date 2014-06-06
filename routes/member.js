@@ -51,9 +51,27 @@ router.get('/index', function (req, res, next) {
 });
 
 /**
+ * 添加成员
+ */
+router.post('/add',function(req, res){
+    //成员可以重复添加
+    Member.newAndSave(req.body.name, req.body.title, req.body.birthday,req.body.stature ,
+        req.body.weight,req.body.circumference,req.body.waistline,req.body.shoeSize,
+        req.body.comments,req.session.user.name, function (err, member) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/member/list');
+            }
+            req.flash('success', '成员加入成功');
+            res.redirect('/member/index');
+        });
+
+});
+
+/**
  * 跳转到成员修改页面
  */
-router.get('/modify_page', function (req, res, next) {
+router.get('/modifyPage', function (req, res, next) {
     var current_page = parseInt(req.query.current_page, 10) || 1;
     var limit = settings.number_of_pages;
 
@@ -100,20 +118,9 @@ router.get('/modify_page', function (req, res, next) {
 });
 
 /**
- * 添加成员
+ * 成员修改
  */
-router.post('/add',function(req, res){
-    //成员可以重复添加
-    Member.newAndSave(req.body.name, req.body.title, req.body.birthday,req.body.stature ,
-        req.body.weight,req.body.circumference,req.body.waistline,req.body.shoeSize,
-        req.body.comments,req.session.user.name, function (err, member) {
-        if (err) {
-            req.flash('error', err);
-            return res.redirect('/member/list');
-        }
-        req.flash('success', '成员加入成功');
-        res.redirect('/member/index');
-    });
+router.post('/modify',function(req, res){
 
 });
 
