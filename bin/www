@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+var debug = require('debug')('my-application');
+var app = require('../app');
+
+app.set('port', process.env.PORT || 6130);
+
+var server = app.listen(app.get('port'), function() {
+  console.log("God bless love....");
+  console.log("****************************************************");
+  console.log("/* Majordomo是Node.js+Express4+Bootstrap3学习项目 */");
+  console.log("/*           create by qun.su  2014-5-15         */");
+  console.log("****************************************************");
+  console.log(new Date());
+  console.log('Majordomo listening on port ' + server.address().port);
+});
