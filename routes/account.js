@@ -9,7 +9,7 @@ var EventProxy = require('eventproxy');
 var settings = require('../settings');
 
 /**
- * 成员信息主页
+ * 账本
  */
 router.get('/index', function (req, res, next) {
     var current_page = parseInt(req.query.current_page, 10) || 1;

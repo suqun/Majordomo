@@ -9,9 +9,10 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var users = require('./routes/users');
 var member = require('./routes/member');
+var accounts = require('./routes/accounts');
 
 var app = express();
 
@@ -37,7 +38,7 @@ app.use(function (req, res, next) {
     var url = req.originalUrl;
 
     //简单地定义一个登录拦截器,正则表达式拦截路径/memmber/,/account/,/health/,/plan/,/diary/
-    var regexp = new RegExp("\/member\/|\/account\/|\/health\/|\/plan\/|\/diary\/", "g");
+    var regexp = new RegExp("\/member\/|\/accounts\/|\/health\/|\/plan\/|\/diary\/", "g");
     if (regexp.test(url) && !req.session.user) {
         console.log("尚未登录");
         return res.redirect("/users/login");
@@ -58,9 +59,10 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 //路由
-app.use('/', routes);
+app.use('/', index);
 app.use('/users', users);
 app.use('/member', member);
+app.use('/accounts', accounts);
 
 /// catch 404 and forwarding to error handler
 app.use(function (req, res, next) {
