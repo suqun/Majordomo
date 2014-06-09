@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
     //console.log("访问地址："+req.originalUrl);
     var url = req.originalUrl;
 
-    //简单地定义一个登录拦截器,正则表达式拦截路径/memmber/,/account/,/health/,/plan/,/diary/
+    //简单地定义一个登录拦截器,正则表达式拦截路径/memmber/,/accounts/,/health/,/plan/,/diary/
     var regexp = new RegExp("\/member\/|\/accounts\/|\/health\/|\/plan\/|\/diary\/", "g");
     if (regexp.test(url) && !req.session.user) {
         console.log("尚未登录");

@@ -1,0 +1,55 @@
+<% include ../header.ejs %>
+<style>
+    body {
+        padding-top: 100px;
+    }
+</style>
+
+<div class="container container-fluid" id="container">
+    <div class="row-fluid">
+        <div class="span12">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="/accounts/index">记账首页</a></li>
+                <li><a href="/accounts/detail">明细查询</a></li>
+                <li><a href="#">月度统计</a></li>
+            </ul>
+        </div>
+        <div class="span12">
+            <div class="jumbotron">
+                <h1> 亲爱的<%= locals.user.loginname%></h1>
+                <p class="lead">您本月支出：  <label style="color: #FF6666">159.00元</label>    收入：  <label style="color:#66CC66 ">0.00元</label></p>
+                <p><a class="btn btn-lg btn-success" href="#" role="button">查看本月统计</a></p>
+            </div>
+        </div>
+        <div class="span12">
+            <div class="page-header">
+                使用遇到问题？
+            </div>
+            <dl>
+                <dt>
+                    <span class="badge">1</span>
+                    <small>如何删除某条账目。</small>
+                </dt>
+                <dd>
+                    答：进入“统计查询”，找到具体的记账条目，点击右侧的【删除】链接即可。
+                </dd>
+                <dt>
+                    <span class="badge">2</span>
+                    <small>我怎么记上个月或下个月的账？</small>
+                </dt>
+                <dd>
+                    答：1、 进入【手工记账】； 2、 选择时间，类型，分类，金额和资金账户等，进行记账操作即可，您也可以点击【+添加一笔】，同时提交多条数据。
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+
+    });
+</script>
+
+<% include ../footer.ejs %>

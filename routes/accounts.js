@@ -9,46 +9,23 @@ var EventProxy = require('eventproxy');
 var settings = require('../settings');
 
 /**
- * 账本
+ * 账本首页
  */
 router.get('/index', function (req, res, next) {
-    var current_page = parseInt(req.query.current_page, 10) || 1;
-    var limit = settings.number_of_pages;
-
-    var proxy = EventProxy.create('members','page',
-        function (members, page) {
-            res.render('./member/member_index', {
-                members: members,
-                page: page// 总记录数
-            });
-        });
-    proxy.fail(next);
-
-    // 取成员 col为查询出的字段
-    var col = {_id:1,name:1,title:1,birthday:1,stature:1,weight:1,circumference:1,
-        waistline:1,shoeSize:1,comments:1,create_at:1};
-    var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-create_at',col:col};
-
-    Member.getMembersByQuery({}, options, proxy.done('members', function (members) {
-        //日期格式化 有空再看看如何查询数据库的时候进行格式化，省掉循环
-        for(var i=0; i<members.length;i++){
-            var member = members[i];
-            member.create_at_str = new moment(members[i].create_at).format('YYYY/MM/DD');
-        }
-        return members;
-    }));
-
-    // 取分页数据
-    Member.getCountByQuery({}, proxy.done(function (all_members_count) {
-        var total_pages = Math.ceil(all_members_count / limit);
-        var page = {};
-        page.current_page = current_page;
-        page.number_of_pages = limit;
-        page.total_pages = total_pages;
-
-        proxy.emit('page', page);
-    }));
+    res.render('./accounts/accounts_index', {
+        user:req.session.user
+    });
 });
+
+/**
+ * 账本明细查询
+ */
+router.get('/detail', function (req, res, next) {
+    res.render('./accounts/accounts_detail', {
+        title:''
+    });
+});
+
 
 /**
  * 添加成员
