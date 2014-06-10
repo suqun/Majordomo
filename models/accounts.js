@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 
 var AccountsSchema = new Schema({
@@ -11,13 +12,13 @@ var AccountsSchema = new Schema({
     cash : { type: String },                     //金额（元）
     account : { type: Number, default: 0 },      //资金账户
     remark : { type: String},                    //备注
-    create_un : { type: String },                //添加人
+    user_id : { type: ObjectId },                //添加人
     create_at: { type: Date, default: Date.now },
     update_at: { type: Date, default: Date.now },
     active: { type: Boolean, default: true }     //是否有效
 },{collection : 'accounts'});
 
-MemberSchema.index({create_at: 1});
+AccountsSchema.index({create_at: 1});
 
 mongoose.model('Accounts',AccountsSchema);
 

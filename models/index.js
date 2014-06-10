@@ -14,6 +14,8 @@ mongoose.connect(settings.uri, function (err) {
 // models
 require('./user');
 require('./member');
+require('./accounts');
 
 exports.User = mongoose.model('User');
 exports.Member = mongoose.model('Member');
+exports.Accounts = mongoose.model('Accounts');

@@ -10,16 +10,41 @@
         <div class="span12">
             <ul class="nav nav-pills">
                 <li class="active"><a href="/accounts/index">记账首页</a></li>
+                <li><a href="/accounts/keep">手工记账</a></li>
                 <li><a href="/accounts/detail">明细查询</a></li>
-                <li><a href="#">月度统计</a></li>
+                <li><a href="/accounts/monthly">月度统计</a></li>
             </ul>
         </div>
         <div class="span12">
             <div class="jumbotron">
                 <h1> 亲爱的<%= locals.user.loginname%></h1>
                 <p class="lead">您本月支出：  <label style="color: #FF6666">159.00元</label>    收入：  <label style="color:#66CC66 ">0.00元</label></p>
-                <p><a class="btn btn-lg btn-success" href="#" role="button">查看本月统计</a></p>
+                <p>
+                    <a class="btn btn-lg btn-success" href="/accounts/monthly" role="button">查看本月统计</a>
+                    <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">
+                        快速记账
+                    </button>
+                </p>
+
             </div>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">手工记账</h4>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary">确认并保存</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         </div>
         <div class="span12">
             <div class="page-header">

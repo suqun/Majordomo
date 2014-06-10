@@ -10,12 +10,58 @@
         <div class="span12">
             <ul class="nav nav-pills">
                 <li ><a href="/accounts/index">记账首页</a></li>
+                <li><a href="/accounts/keep">手工记账</a></li>
                 <li class="active"><a href="/accounts/detail">明细查询</a></li>
-                <li><a href="#">月度统计</a></li>
+                <li><a href="/accounts/monthly">月度统计</a></li>
             </ul>
         </div>
         <div class="span12">
+            <!-- 列表-->
+            <table class="table table-hover table-responsive ">
+                <thead>
+                <tr>
+                    <th><p class="help-block">#</p></th>
+                    <th><p class="help-block">时间</p></th>
+                    <th><p class="help-block">类型</p></th>
+                    <th><p class="help-block">账目分类</p></th>
+                    <th><p class="help-block">金额</p></th>
+                    <th><p class="help-block">资金账户</p></th>
+                    <th><p class="help-block">备注</p></th>
+                    <th><p class="help-block">操作</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                <%
+                accounts.forEach(function(acc, index) {
+                        if(index%2 == 0){
+                %><tr class="success"><%
+                    }
+                    %>
+                    <td><%= index+1 %></td>
+                    <td><%= acc.create_at_str %></td>
+                    <td><%= acc.kind %></td>
+                    <td><%= acc.type %> </td>
+                    <td><%= acc.cash %></td>
+                    <td><%= acc.account %></td>
+                    <td><%= acc.remark %></td>
+                    <td>
+                        <div class="btn-group-vertical btn-group-sm">
+                            <button type="button" class="btn btn-primary " onclick="modifyPage('<%=acc._id%>');">修改</button>
+                            <button type="button" class="btn btn-warning" onclick="deleteMember('<%=acc._id%>');">删除</button>
+                        </div>
+                    </td>
+                </tr>
+                <%}) %>
 
+                </tbody>
+            </table>
+
+            <!-- 分页 -->
+            <div id="pagination" current_page="<%= page.current_page %>"
+                 number_of_pages="<%= page.number_of_pages %>"
+                 total_pages="<%= page.total_pages %>">
+                <ul id="page1" ></ul>
+            </div>
         </div>
         <div class="span12">
             <div class="page-header">
@@ -36,7 +82,22 @@
 
 <script>
     $(function(){
+        /** 分页 **/
+        var $nav = $('#pagination');
+        var current_page = $nav.attr('current_page');
+        var number_of_pages = $nav.attr('number_of_pages');
+        var total_pages = $nav.attr('total_pages');
 
+        var options = {
+            bootstrapMajorVersion: 3,//bootstrap3版本
+            currentPage: current_page,//当前页数
+            numberOfPages: number_of_pages,//每页显示数量
+            totalPages: total_pages, //总页数
+            pageUrl: function (type, page, current_page) {
+                return "/member/index?current_page=" + page   ; //分页的链接,传递的参数为page
+            }
+        }
+        $('#page1').bootstrapPaginator(options);
     });
 </script>
 
