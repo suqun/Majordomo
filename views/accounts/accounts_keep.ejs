@@ -1,46 +1,65 @@
-<% include ../header.ejs %>
-<style>
-    body {
-        padding-top: 100px;
-    }
-</style>
-
-<div class="container container-fluid" id="container">
-    <div class="row-fluid">
-        <div class="span12">
-            <ul class="nav nav-pills">
-                <li><a href="/accounts/index">记账首页</a></li>
-                <li class="active"><a href="/accounts/keep">手工记账</a></li>
-                <li><a href="/accounts/detail">明细查询</a></li>
-                <li><a href="/accounts/monthly">月度统计</a></li>
-            </ul>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">手工记账</h4>
         </div>
-        <div class="span12">
+        <form class="form-horizontal" role="form" method="post" action="/member/add">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="date" class="col-sm-2 control-label help-block">消费日期</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="date" name="date" class="form-control" placeholder="请选择日期">
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="kind" class="col-sm-2 control-label help-block">收支类型</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="kind" name="kind" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="type" class="col-sm-2 control-label help-block">账目分类</label>
+                    <div class="input-append date col-sm-10">
+                        <input type="text" class="form-control" id="type" name="type" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cash" class="col-sm-2 control-label help-block">金额</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="cash" name="cash" placeholder="单位：元 （请输入数字，输错很2）">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="account" class="col-sm-2 control-label help-block">资金账户</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="account" name="account" placeholder="">
+                    </div>
+                </div>
 
-
-
-        </div>
-        <div class="span12">
-            <div class="page-header">
-                使用遇到问题？
+                <div class="form-group">
+                    <label for="remark" class="col-sm-2 control-label help-block">备注</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" id="remark" name="remark" placeholder=""></textarea>
+                    </div>
+                </div>
             </div>
-            <dl>
-                <dt>
-                    <span class="badge">1</span>
-                    <small>我的记账数据安全么？</small>
-                </dt>
-                <dd>
-                    答：记账产品是安全的，您可以放心使用。
-                </dd>
-            </dl>
-        </div>
-    </div>
-</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认并保存</button>
+            </div>
+        </form>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
 
 <script>
     $(function(){
-
+        /** 日期 **/
+        $('#date').datepicker({
+            todayBtn: "linked",
+            language: "zh-CN",
+            format: "yyyy/mm/dd"
+        });
     });
 </script>
-
-<% include ../footer.ejs %>
