@@ -7,7 +7,7 @@ var ObjectId = Schema.ObjectId;
 
 
 var AccountsSchema = new Schema({
-    date : { type: Date, default: Date.now },    //消费日期
+    date : { type: String },                     //消费日期
     kind : { type: String },                     //收支类型
     type : { type: String },                     //账目分类
     cash : { type: String },                     //金额（元）

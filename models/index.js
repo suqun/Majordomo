@@ -15,7 +15,9 @@ mongoose.connect(settings.uri, function (err) {
 require('./user');
 require('./member');
 require('./accounts');
+require('./sysCode');
 
 exports.User = mongoose.model('User');
 exports.Member = mongoose.model('Member');
 exports.Accounts = mongoose.model('Accounts');
+exports.SysCode = mongoose.model('SysCode');
