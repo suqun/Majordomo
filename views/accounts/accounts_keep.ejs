@@ -54,6 +54,74 @@
 </div><!-- /.modal-dialog -->
 
 <script>
+    /**
+     通用加载select控件的option方法
+     参数:
+     url - 调用的action
+     param - 参数  写法:'key1=value1&key2=value2'
+     value - select的默认值(没有则传null)
+     select - select控件的引用 (document.getElementById('...'))
+
+     action返回值为json数据,格式为['display':...,'value':..]的数组
+     */
+    function loadSelectOption(url,param,value,select){
+        ajaxRemote(url,param,
+                function(data){
+                    select.options.length=0;
+                    for(var i=0;i<data.length;i++){
+                        var obj=data[i];
+                        var option=document.createElement('option');
+                        option.value=obj['value'];
+                        option.innerHTML=obj['display'];
+
+                        if(option.value==value){
+                            option.selected='selected';
+                        }
+                        select.appendChild(option);
+                    }
+                },'json');
+    }
+
+    function loadPoint(){
+        var select=document.getElementById('select_point');
+        var url='${ctx}/invoiceInputOrder/ajaxGetAllPoint.action';
+        if("${queryMap['stockInPointId'][0]}" == "" || "${queryMap['stockInPointId'][0]}" == undefined){
+            loadSelectOption(url,null,null,select);
+        }else{
+            loadSelectOption(url,null,"${queryMap['stockInPointId'][0]}",select);
+        }
+
+    }
+
+    function pointChange(){
+        var select=document.getElementById('select_user');
+        var url='${ctx}/invoiceInputOrder/ajaxGetUser.action';
+        var pId  = document.getElementById('select_point').value;
+        if(pId==null || pId==undefined || pId==""){
+            pId = "${queryMap['stockInPointId'][0]}";
+        }
+        var param={pointId:pId};
+        if("${queryMap['stockInUserId'][0]}" == "" || "${queryMap['stockInUserId'][0]}" == undefined){
+            loadSelectOption(url,param,null,select);
+        }else{
+            loadSelectOption(url,param,"${queryMap['stockInUserId'][0]}",select);
+        }
+    }
+    /*
+     <td width="120" align=right>
+     <span>请求网点：</span>
+     </td>
+     <td width="120">
+     <select id="select_point" name="queryMap['stockInPointId']"  onchange="pointChange();"></select>
+     </td>
+     <td width="120" align=right>
+     <span>请求柜员：</span>
+     </td>
+     <td width="120">
+     <select id="select_user" name="queryMap['stockInUserId']" ></select>
+     </td>
+    */
+
     $(function(){
         /** 日期 **/
         $('#date').datepicker({
@@ -61,5 +129,8 @@
             language: "zh-CN",
             format: "yyyy/mm/dd"
         });
+
+        loadPoint();
+        pointChange();
     });
 </script>
