@@ -90,30 +90,29 @@ exports.deleteMember = function (qry,callback) {
 };
 
 /**
- * 添加成员
+ * 添加账单
  * Callback:
  * - err, 数据库异常
- * - member, 成员
- * @param {String} name
- * @param {String} title
- * @param {String} birthday
- * @param {String} comments
- * @param {String} create_un
- * @param {Date} create_at
+ * - accounts, 账单
+ * @param {String} date
+ * @param {String} kind
+ * @param {String} type
+ * @param {Number} cash
+ * @param {String} account
+ * @param {String} remark
+ * @param {String} user_id
  * @param {Function} callback
  */
-exports.newAndSave = function (name, title, birthday,stature,weight,circumference,waistline,shoeSize, comments, create_un, callback) {
-    var member = new Member();
-    member.name = name;
-    member.title = title;
-    member.birthday = birthday;
-    member.stature = stature;
-    member.weight = weight;
-    member.circumference = circumference;
-    member.waistline = waistline;
-    member.shoeSize = shoeSize;
-    member.comments = comments;
-    member.create_un = create_un;
-    member.save(callback);
+exports.newAndSave = function (date, kind, type,cash,account,remark, user_id, callback) {
+    var accounts = new Accounts();
+    accounts.date = date;
+    accounts.kind = kind;
+    accounts.type = type;
+    accounts.cash = cash;
+    accounts.account = account;
+    accounts.remark = remark;
+    accounts.user_id = user_id;
+    accounts.active = true;
+    accounts.save(callback);
 
 };

@@ -4,6 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var Accounts = require('../proxy').Accounts;
+var SysCode = require('../proxy').SysCode;
 var moment = require('moment');
 var EventProxy = require('eventproxy');
 var settings = require('../settings');
@@ -17,13 +18,21 @@ router.get('/index', function (req, res, next) {
     });
 });
 
+
 /**
- * 记账页面
+ * 记账
  */
-router.get('/keep', function (req, res, next) {
-    res.render('./accounts/accounts_keep', {
-        user:req.session.user
-    });
+router.post('/add',function(req, res){
+    Accounts.newAndSave(req.body.date,req.body.kind, req.body.type, req.body.cash,req.body.account ,
+        req.body.remark,req.session.user._id, function (err, accounts) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/accounts/detail');
+            }
+            req.flash('success', '记账成功');
+            res.redirect('/accounts/detail');
+        });
+
 });
 
 /**
@@ -75,6 +84,19 @@ router.get('/monthly', function (req, res, next) {
     res.render('./accounts/accounts_monthly', {
         user:req.session.user
     });
+});
+
+/**
+ * 获取SysCode
+ */
+router.get('/getSysCode', function (req, res, next) {
+    var qry = {code_type_no:req.query.codeTypeNo};
+    SysCode.getCodesByQuery(qry,function(err,codes){
+        if (err) {
+            return next(err);
+        }
+        res.send({codes : codes});
+    })
 });
 
 module.exports = router;

@@ -9,9 +9,9 @@ var SysCode = models.SysCode;
  * Callback:
  * - err, 数据库异常
  * - user, 用户
- * @param {String} qry 代码类型编码
+ * @param {String} qry 查询条件
  * @param {Function} callback 回调函数
  */
-exports.getCodesByTypeNo = function (qry, callback) {
-    SysCode.find({code_type_no: qry}, callback);
+exports.getCodesByQuery = function (qry, callback) {
+    SysCode.find(qry, callback);
 };

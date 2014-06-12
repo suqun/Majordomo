@@ -73,7 +73,7 @@ exports.modifyMember = function (qry,set, callback) {
 };
 
 /**
- * 根据条件修改成员
+ * 根据条件删除成员
  * Callback:
  * - err, 数据库错误
  * - member, 成员
