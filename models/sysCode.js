@@ -10,7 +10,7 @@ var SysCodeSchema = new Schema({
     code_order : { type: String },                //代码序号
     code_no : { type: String },                   //代码编码
     code_value : { type: String },                //代码值
-    code_notes : { type: Number, default: 0 },    //代码说明
+    code_notes : { type: String},                 //代码说明
     active: { type: Boolean, default: true }      //是否有效
 
 },{collection : 'sys_code'});
