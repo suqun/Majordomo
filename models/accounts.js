@@ -7,16 +7,25 @@ var ObjectId = Schema.ObjectId;
 
 
 var AccountsSchema = new Schema({
-    date : { type: String },                     //消费日期
-    kind : { type: String },                     //收支类型
-    type : { type: String },                     //账目分类
-    cash : { type: String },                     //金额（元）
-    account : { type: Number, default: 0 },      //资金账户
-    remark : { type: String},                    //备注
-    user_id : { type: ObjectId },                //添加人
+    date : { type: String },//消费日期
+    kind : {
+        code_no:{type: String},
+        code_value:{type: String}
+    },                     //收支类型
+    type : {
+        code_no:{type: String},
+        code_value:{type: String}
+    },                     //账目分类
+    cash : { type: String },//金额（元）
+    account : {
+        code_no:{type: String},
+        code_value:{type: String}
+    },                     //资金账户
+    remark : { type: String},//备注
+    user_id : { type: ObjectId },//添加人
     create_at: { type: Date, default: Date.now },
     update_at: { type: Date, default: Date.now },
-    active: { type: Boolean, default: true }     //是否有效
+    active: { type: Boolean, default: true }//是否有效
 },{collection : 'accounts'});
 
 AccountsSchema.index({create_at: 1});

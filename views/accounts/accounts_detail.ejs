@@ -23,7 +23,7 @@
                     <th><p class="help-block">时间</p></th>
                     <th><p class="help-block">类型</p></th>
                     <th><p class="help-block">账目分类</p></th>
-                    <th><p class="help-block">金额</p></th>
+                    <th><p class="help-block">金额(元)</p></th>
                     <th><p class="help-block">资金账户</p></th>
                     <th><p class="help-block">备注</p></th>
                     <th><p class="help-block">操作</p></th>
@@ -33,20 +33,26 @@
                 <%
                 accounts.forEach(function(acc, index) {
                         if(index%2 == 0){
-                %><tr class="success"><%
+                %><tr class="warning"><%
                     }
                     %>
                     <td><%= index+1 %></td>
-                    <td><%= acc.create_at_str %></td>
-                    <td><%= acc.kind %></td>
-                    <td><%= acc.type %> </td>
-                    <td><%= acc.cash %></td>
-                    <td><%= acc.account %></td>
+                    <td><%= acc.date %></td>
+                    <td><%= acc.kind.code_value %></td>
+                    <td><%= acc.type.code_value %> </td>
+                    <%
+                      if(acc.kind.code_no === 'payout'){
+                        %><td><label style="color: #FF6666"><%= acc.cash %></label></td><%
+                      } else {
+                        %><td><label style="color: #66CC66"><%= acc.cash %></label></td><%
+                      }
+                    %>
+                    <td><%= acc.account.code_value %></td>
                     <td><%= acc.remark %></td>
                     <td>
                         <div class="btn-group" data-toggle="buttons">
                             <button type="button" class="btn btn-primary " onclick="modifyPage('<%=acc._id%>');">修改</button>
-                            <button type="button" class="btn btn-danger" onclick="deleteMember('<%=acc._id%>');">删除</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteAcc('<%=acc._id%>');">删除</button>
                         </div>
                     </td>
                 </tr>
@@ -80,6 +86,10 @@
 </div>
 
 <script>
+    //删除
+    function deleteAcc(id){
+        location.href = "/accounts/deleteAccounts?_id="+id;
+    }
     $(function(){
         /** 分页 **/
         var $nav = $('#pagination');
@@ -93,7 +103,7 @@
             numberOfPages: number_of_pages,//每页显示数量
             totalPages: total_pages, //总页数
             pageUrl: function (type, page, current_page) {
-                return "/member/index?current_page=" + page   ; //分页的链接,传递的参数为page
+                return "/accounts/detail?current_page=" + page   ; //分页的链接,传递的参数为page
             }
         }
         $('#page1').bootstrapPaginator(options);

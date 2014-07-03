@@ -4,7 +4,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">手工记账</h4>
         </div>
-        <form class="form-horizontal" role="form" method="post" action="/accounts/add">
+        <form class="form-horizontal" role="form" id="form" method="post" action="/accounts/add">
             <div class="modal-body">
                 <div class="form-group">
                     <label for="date" class="col-sm-2 control-label help-block">消费日期</label>
@@ -17,12 +17,14 @@
                     <label for="kind" class="col-sm-2 control-label help-block">收支类型</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="kind" name="kind" onchange="selected();"></select>
+                        <input type="hidden" id="kind_value" name="kind_value">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="type" class="col-sm-2 control-label help-block">账目分类</label>
                     <div class="input-append date col-sm-10">
                         <select class="form-control" id="type" name="type"></select>
+                        <input type="hidden" id="type_value" name="type_value">
                     </div>
                 </div>
                 <div class="form-group">
@@ -35,6 +37,7 @@
                     <label for="account" class="col-sm-2 control-label help-block">资金账户</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="account" name="account"></select>
+                        <input type="hidden" id="account_value" name="account_value">
                     </div>
                 </div>
 
@@ -47,14 +50,22 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-primary">确认并保存</button>
+                <button type="button" onclick="save();" class="btn btn-primary">确认并保存</button>
             </div>
         </form>
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 
 <script>
-
+    function save(){
+        var kind_value=$("#kind").find("option:selected").text();
+        var type_value=$("#type").find("option:selected").text();
+        var account_value=$("#account").find("option:selected").text();
+        $("#kind_value").val(kind_value);
+        $("#type_value").val(type_value);
+        $("#account_value").val(account_value);
+        window.form.submit();
+    }
     function loadKind(){
         var url='/accounts/getSysCode?codeTypeNo=kind';
         var select = document.getElementById("kind");

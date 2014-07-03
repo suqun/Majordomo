@@ -23,8 +23,8 @@ router.get('/index', function (req, res, next) {
  * 记账
  */
 router.post('/add',function(req, res){
-    Accounts.newAndSave(req.body.date,req.body.kind, req.body.type, req.body.cash,req.body.account ,
-        req.body.remark,req.session.user._id, function (err, accounts) {
+    Accounts.newAndSave(req.body.date,req.body.kind,req.body.kind_value, req.body.type,req.body.type_value, req.body.cash,req.body.account ,
+        req.body.account_value,req.body.remark,req.session.user._id, function (err, accounts) {
             if (err) {
                 req.flash('error', err);
                 return res.redirect('/accounts/detail');
@@ -52,15 +52,11 @@ router.get('/detail', function (req, res, next) {
     proxy.fail(next);
 
     // 取成员 col为查询出的字段
-    var col = {_id:1,create_at:1,kind:1,type:1,cash:1,account:1,remark:1};
+    var col = {_id:1,date:1,kind:1,type:1,cash:1,account:1,remark:1};
     var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-create_at',col:col};
 
     Accounts.getAccountsByQuery({}, options, proxy.done('accounts', function (accounts) {
-        //日期格式化 有空再看看如何查询数据库的时候进行格式化，省掉循环
-        for(var i=0; i<accounts.length;i++){
-            var account = accounts[i];
-            account.create_at_str = new moment(accounts[i].create_at).format('YYYY/MM/DD');
-        }
+
         return accounts;
     }));
 
@@ -74,6 +70,23 @@ router.get('/detail', function (req, res, next) {
 
         proxy.emit('page', page);
     }));
+});
+
+/**
+ * 记账明细删除
+ */
+router.get('/deleteAccounts',function(req, res){
+    //根据_id获取成员信息
+    var query = { _id: req.query._id };
+
+    Accounts.deleteAccounts(query,function(err){
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('/member/index');
+        }
+        req.flash('success', '记账明细删除成功');
+        res.redirect('/accounts/detail');
+    });
 });
 
 

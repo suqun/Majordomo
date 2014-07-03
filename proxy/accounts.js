@@ -14,9 +14,9 @@ var Accounts = models.Accounts;
  * @param {Function} callback 回调函数
  */
 exports.getAccountsByQuery = function (qry, opt, callback) {
-    var query = Accounts.find(qry,opt.col).sort(opt.sort).skip(opt.skip).limit(opt.limit);
+    var query = Accounts.find(qry, opt.col).sort(opt.sort).skip(opt.skip).limit(opt.limit);
 
-    query.exec(function(err, accounts) {
+    query.exec(function (err, accounts) {
         if (err) {
             return callback(err);
         }
@@ -46,7 +46,7 @@ exports.getCountByQuery = function (query, callback) {
  * @param {Function} callback 回调函数
  */
 exports.getMemberById = function (id, callback) {
-    Member.findOne({_id:id},function (err, member) {
+    Member.findOne({_id: id}, function (err, member) {
         if (err) {
             return callback(err);
         }
@@ -63,7 +63,7 @@ exports.getMemberById = function (id, callback) {
  * @param {JSON} set 查询条件
  * @param {Function} callback 回调函数
  */
-exports.modifyMember = function (qry,set, callback) {
+exports.modifyMember = function (qry, set, callback) {
     Member.update(qry, set, [], function (err, member) {
         if (err) {
             return callback(err);
@@ -80,8 +80,8 @@ exports.modifyMember = function (qry,set, callback) {
  * @param {JSON} qry 查询条件
  * @param {Function} callback 回调函数
  */
-exports.deleteMember = function (qry,callback) {
-    Member.remove(qry, function (err) {
+exports.deleteAccounts = function (qry, callback) {
+    Accounts.remove(qry, function (err) {
         if (err) {
             return callback(err);
         }
@@ -96,20 +96,26 @@ exports.deleteMember = function (qry,callback) {
  * - accounts, 账单
  * @param {String} date
  * @param {String} kind
+ * @param {String} kind_value
  * @param {String} type
+ * @param {String} type_value
  * @param {Number} cash
  * @param {String} account
+ * @param {String} account_value
  * @param {String} remark
  * @param {String} user_id
  * @param {Function} callback
  */
-exports.newAndSave = function (date, kind, type,cash,account,remark, user_id, callback) {
+exports.newAndSave = function (date, kind, kind_value, type, type_value, cash, account, account_value, remark, user_id, callback) {
     var accounts = new Accounts();
     accounts.date = date;
-    accounts.kind = kind;
-    accounts.type = type;
+    accounts.kind.code_no = kind;
+    accounts.kind.code_value = kind_value;
+    accounts.type.code_no = type;
+    accounts.type.code_value = type_value;
     accounts.cash = cash;
-    accounts.account = account;
+    accounts.account.code_no = account;
+    accounts.account.code_value = account_value;
     accounts.remark = remark;
     accounts.user_id = user_id;
     accounts.active = true;
