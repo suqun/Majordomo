@@ -38,15 +38,15 @@ exports.getCountByQuery = function (query, callback) {
 };
 
 /**
- * 根据成员ID获取成员
+ * 根据成员ID获取一条记账信息
  * Callback:
  * - err, 数据库错误
  * - member, 成员
- * @param {String} id 成员ID
+ * @param {String} id 记账ID
  * @param {Function} callback 回调函数
  */
-exports.getMemberById = function (id, callback) {
-    Member.findOne({_id: id}, function (err, member) {
+exports.getAccountById = function (id, callback) {
+    Accounts.findOne({_id: id}, function (err, member) {
         if (err) {
             return callback(err);
         }

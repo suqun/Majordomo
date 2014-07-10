@@ -51,7 +51,7 @@
                     <td><%= acc.remark %></td>
                     <td>
                         <div class="btn-group" data-toggle="buttons">
-                            <button type="button" class="btn btn-primary " onclick="modifyPage('<%=acc._id%>');">修改</button>
+                            <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal" onclick="modifyInfo('<%=acc._id%>');loadInfo();">修改</button>
                             <button type="button" class="btn btn-danger" onclick="deleteAcc('<%=acc._id%>');">删除</button>
                         </div>
                     </td>
@@ -67,6 +67,10 @@
                  total_pages="<%= page.total_pages %>">
                 <ul id="page1" ></ul>
             </div>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <%include accounts_modify.ejs%>
+            </div><!-- /.modal -->
         </div>
         <div class="span12">
             <div class="page-header">
@@ -89,6 +93,10 @@
     //删除
     function deleteAcc(id){
         location.href = "/accounts/deleteAccounts?_id="+id;
+    }
+    //修改页面
+    function modifyPage(id){
+        location.href = "/accounts/modifyPage?_id="+id;
     }
     $(function(){
         /** 分页 **/

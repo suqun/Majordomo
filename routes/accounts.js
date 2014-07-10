@@ -89,6 +89,17 @@ router.get('/deleteAccounts',function(req, res){
     });
 });
 
+/**
+ * 跳转到成员修改页面
+ */
+router.get('/getAccountById', function (req, res, next) {
+    Accounts.getAccountById(req.query._id, function (err,account) {
+        if (err) {
+            return next(err);
+        }
+        res.send({account : account});
+    });
+});
 
 /**
  * 月度统计
