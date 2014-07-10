@@ -66,9 +66,17 @@
         $("#account_value").val(account_value);
         window.form.submit();
     }
+
     function loadKind(){
         var url='/accounts/getSysCode?codeTypeNo=kind';
         var select = document.getElementById("kind");
+
+        var option = document.createElement('option');
+        option.value = 0;
+        option.innerHTML = "";
+        option.selected = true;
+        select.appendChild(option);
+
         $.get(url,function(data){
            for(var i = 0; i < data.codes.length; i++){
                var option = document.createElement('option');

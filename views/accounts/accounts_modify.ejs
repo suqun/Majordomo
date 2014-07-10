@@ -50,14 +50,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" onclick="save();" class="btn btn-primary">确认并保存</button>
+                <button type="button" onclick="modify();" class="btn btn-primary">确认并保存</button>
             </div>
         </form>
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 
 <script>
-    function save(){
+    function modify(){
         var kind_value=$("#kind").find("option:selected").text();
         var type_value=$("#type").find("option:selected").text();
         var account_value=$("#account").find("option:selected").text();
@@ -72,16 +72,16 @@
         $.get(url,function(data){
             var account = data.account;
             $("#date").val(account.date);
-            $("#kind").val(account.kind.code_no);
-            $("#type").val(account.type.code_no);
+            loadKind(account.kind.code_no);
+            loadType(account.kind.code_no,account.type.code_no);
             $("#cash").val(account.cash);
-            $("#account").val(account.account.code_no);
+            loadAccount(account.account.code_no);
             $("#remark").val(account.remark);
         });
 
     }
 
-    function loadKind(){
+    function loadKind(no){
         var url='/accounts/getSysCode?codeTypeNo=kind';
         var select = document.getElementById("kind");
         select.options.length = 0;
@@ -90,13 +90,33 @@
                var option = document.createElement('option');
                option.value = data.codes[i].code_no;
                option.innerHTML= data.codes[i].code_value;
+               if(no === option.value){
+                   option.selected = true;
+               }
                select.appendChild(option);
+
            }
         });
     }
 
+    function loadType(kind,no){
+        var url='/accounts/getSysCode?codeTypeNo=' + kind;
+        var select = document.getElementById("type");
+        select.options.length = 0;
+        $.get(url,function(data){
+            for(var i = 0; i < data.codes.length; i++){
+                var option = document.createElement('option');
+                option.value = data.codes[i].code_no;
+                option.innerHTML= data.codes[i].code_value;
+                if(no === data.codes[i].code_no){
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            }
+        });
+    }
+
     function selected(){
-        var type_no = $("#type").val();
         var url='/accounts/getSysCode?codeTypeNo=' + $("#kind").val();
         var select = document.getElementById("type");
         select.options.length = 0;
@@ -105,27 +125,21 @@
                 var option = document.createElement('option');
                 option.value = data.codes[i].code_no;
                 option.innerHTML= data.codes[i].code_value;
-                if(type_no === data.codes[i].code_no){
-                    option.selected = true;
-                }
                 select.appendChild(option);
             }
         });
     }
 
-    function loadInfo(){
-        loadKind();
-        selected();
-        loadAccount();
-    }
-
-    function loadAccount(){
+    function loadAccount(no){
         var url='/accounts/getSysCode?codeTypeNo=account';
         $.get(url,function(data){
             for(var i = 0; i < data.codes.length; i++){
                 var option = document.createElement('option');
                 option.value = data.codes[i].code_no;
                 option.innerHTML= data.codes[i].code_value;
+                if(no === data.codes[i].code_no){
+                    option.selected = true;
+                }
                 document.getElementById("account").appendChild(option);
             }
         });

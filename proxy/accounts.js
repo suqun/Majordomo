@@ -24,7 +24,6 @@ exports.getAccountsByQuery = function (qry, opt, callback) {
     });
 };
 
-
 /**
  * 获取关键词能搜索到的成员数量
  * Callback:
