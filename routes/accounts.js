@@ -147,6 +147,15 @@ router.get('/monthly', function (req, res, next) {
 });
 
 /**
+ * 记账
+ */
+router.get('/add', function (req, res, next) {
+    res.render('./accounts/accounts_add', {
+        user:req.session.user
+    });
+});
+
+/**
  * 获取SysCode
  */
 router.get('/getSysCode', function (req, res, next) {
