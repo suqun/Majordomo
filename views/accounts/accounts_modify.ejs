@@ -4,7 +4,8 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">记账修改</h4>
         </div>
-        <form class="form-horizontal" role="form" id="form" method="post" action="/accounts/add">
+        <form class="form-horizontal" role="form" id="form" method="post" action="/accounts/modify">
+            <input type="hidden" id="_id" name="_id">
             <div class="modal-body">
                 <div class="form-group">
                     <label for="date" class="col-sm-2 control-label help-block">消费日期</label>
@@ -71,6 +72,7 @@
         var url='/accounts/getAccountById?_id='+id;
         $.get(url,function(data){
             var account = data.account;
+            $("#_id").val(account._id);
             $("#date").val(account.date);
             loadKind(account.kind.code_no);
             loadType(account.kind.code_no,account.type.code_no);

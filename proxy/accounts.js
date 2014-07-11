@@ -54,7 +54,7 @@ exports.getAccountById = function (id, callback) {
 };
 
 /**
- * 根据条件修改成员
+ * 根据条件修改记账信息
  * Callback:
  * - err, 数据库错误
  * - member, 成员
@@ -62,12 +62,12 @@ exports.getAccountById = function (id, callback) {
  * @param {JSON} set 查询条件
  * @param {Function} callback 回调函数
  */
-exports.modifyMember = function (qry, set, callback) {
-    Member.update(qry, set, [], function (err, member) {
+exports.modifyAccount = function (qry, set, callback) {
+    Accounts.update(qry, set, [], function (err, account) {
         if (err) {
             return callback(err);
         }
-        return callback(null, member);
+        return callback(null, account);
     });
 };
 

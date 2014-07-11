@@ -84,7 +84,7 @@ router.get('/deleteAccounts',function(req, res){
             req.flash('error', err);
             return res.redirect('/member/index');
         }
-        req.flash('success', '记账明细删除成功');
+        req.flash('success', '记账删除成功');
         res.redirect('/accounts/detail');
     });
 });
@@ -109,24 +109,31 @@ router.post('/modify',function(req, res){
     var query = { _id: req.body._id };
 
     var set = {
-        date:req.body.date,
-        kind:req.body.title,
-        birthday:req.body.birthday,
-        stature:req.body.stature,
-        weight:req.body.weight,
-        circumference:req.body.circumference,
-        waistline:req.body.waistline,
-        shoeSize:req.body.shoeSize,
-        comments:req.body.comments
+        date: req.body.date,
+        kind: {
+            code_no: req.body.kind,
+            code_value: req.body.kind_value
+        },
+        type: {
+            code_no: req.body.type,
+            code_value: req.body.type_value
+        },
+        cash: req.body.cash,
+        account: {
+            code_no: req.body.account,
+            code_value: req.body.account_value
+        },
+        remark: req.body.remark,
+        update_at: new Date()
     };
 
-    Member.modifyMember(query,set,function(err,member){
+    Accounts.modifyAccount(query,set,function(err,account){
         if (err) {
             req.flash('error', err);
-            return res.redirect('/member/index');
+            return res.redirect('/accounts/detail');
         }
-        req.flash('success', '成员修改成功');
-        res.redirect('/member/index');
+        req.flash('success', '记账修改成功');
+        res.redirect('/accounts/detail');
     });
 });
 

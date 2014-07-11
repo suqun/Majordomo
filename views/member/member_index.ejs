@@ -35,7 +35,7 @@ body {
                             <div class="form-group">
                                 <input type="text" id="name" name="name" class="form-control" placeholder="请输入姓名">
                             </div>
-                            <button type="submit" class="btn btn-primary">查询</button>
+                            <button type="submit" class="btn btn-success">查询</button>
                         </form>
 
                     <!-- 列表-->
@@ -75,8 +75,8 @@ body {
                             <td><%= m.create_at_str %></td>
                             <td>
                                 <div class="btn-group-vertical btn-group-sm">
-                                    <button type="button" class="btn btn-primary " onclick="modifyPage('<%=m._id%>');">修改</button>
-                                    <button type="button" class="btn btn-danger" onclick="deleteMember('<%=m._id%>');">删除</button>
+                                    <button type="button" class="btn btn-success " onclick="modifyPage('<%=m._id%>');">修改</button>
+                                    <button type="button" class="btn btn-warning" onclick="deleteMember('<%=m._id%>');">删除</button>
                                 </div>
                             </td>
                         </tr>

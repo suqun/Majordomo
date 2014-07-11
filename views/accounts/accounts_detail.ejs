@@ -7,6 +7,14 @@
 
 <div class="container container-fluid" id="container">
     <div class="row-fluid">
+        <!-- 提示信息 -->
+        <% if ( locals.success ) {  %>
+        <div class="alert alert-success"> <%= locals.success %></div>
+        <% } %>
+        <% if ( locals.error ) { %>
+        <div class="alert alert-danger "> <%= locals.error %></div>
+        <% } %>
+
         <div class="span12">
             <ul class="nav nav-pills">
                 <li ><a href="/accounts/index">记账首页</a></li>
@@ -16,6 +24,14 @@
         </div>
 
         <div class="span12">
+            <!-- 搜索框 -->
+            <form class="navbar-form navbar-left" role="search" method="post" action="/member/search">
+                <div class="form-group">
+                    <input type="text" id="name" name="name" class="form-control" placeholder="请输入姓名">
+                </div>
+                <button type="submit" class="btn btn-success">查询</button>
+            </form>
+
             <!-- 列表-->
             <table class="table table-hover table-responsive ">
                 <thead>
@@ -52,8 +68,8 @@
                     <td><%= acc.remark %></td>
                     <td>
                         <div class="btn-group" data-toggle="buttons">
-                            <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal" onclick="modifyInfo('<%=acc._id%>');">修改</button>
-                            <button type="button" class="btn btn-danger" onclick="deleteAcc('<%=acc._id%>');">删除</button>
+                            <button type="button" class="btn btn-success " data-toggle="modal" data-target="#myModal" onclick="modifyInfo('<%=acc._id%>');">修改</button>
+                            <button type="button" class="btn btn-warning" onclick="deleteAcc('<%=acc._id%>');">删除</button>
                         </div>
                     </td>
                 </tr>
