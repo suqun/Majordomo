@@ -53,7 +53,7 @@ router.get('/detail', function (req, res, next) {
 
     // 取成员 col为查询出的字段
     var col = {_id:1,date:1,kind:1,type:1,cash:1,account:1,remark:1};
-    var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-create_at',col:col};
+    var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-date',col:col};
 
     Accounts.getAccountsByQuery({}, options, proxy.done('accounts', function (accounts) {
 
