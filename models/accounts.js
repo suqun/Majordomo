@@ -16,7 +16,7 @@ var AccountsSchema = new Schema({
         code_no:{type: String},
         code_value:{type: String}
     },                     //账目分类
-    cash : { type: String },//金额（元）
+    cash : { type: Number, default: 0},//金额（元）
     account : {
         code_no:{type: String},
         code_value:{type: String}

@@ -5,7 +5,6 @@ var express = require('express');
 var router = express.Router();
 var Accounts = require('../proxy').Accounts;
 var SysCode = require('../proxy').SysCode;
-var moment = require('moment');
 var EventProxy = require('eventproxy');
 var settings = require('../settings');
 
@@ -13,8 +12,14 @@ var settings = require('../settings');
  * 账本首页
  */
 router.get('/index', function (req, res, next) {
-    res.render('./accounts/accounts_index', {
-        user:req.session.user
+    Accounts.getAccountSumByMonth(function (err,docs) {
+        if (err) {
+            return next(err);
+        }
+        res.render('./accounts/accounts_index', {
+            user : req.session.user,
+            docs : docs
+        });
     });
 });
 

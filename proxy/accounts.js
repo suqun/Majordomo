@@ -3,6 +3,7 @@
  */
 var models = require('../models');
 var Accounts = models.Accounts;
+var moment = require('moment');
 
 /**
  * 根据关键词，获取记账列表
@@ -45,12 +46,35 @@ exports.getCountByQuery = function (query, callback) {
  * @param {Function} callback 回调函数
  */
 exports.getAccountById = function (id, callback) {
-    Accounts.findOne({_id: id}, function (err, member) {
+    Accounts.findOne({_id: id}, function (err, acc) {
         if (err) {
             return callback(err);
         }
-        return callback(null, member);
+        return callback(null, acc);
     });
+};
+
+/**
+ * 获取当前月收入支出金额总和
+ * Callback:
+ * - err, 数据库错误
+ * - member, 成员
+ * @param {Function} callback 回调函数
+ */
+exports.getAccountSumByMonth = function (date, callback) {
+    var day = new moment(new Date()).format('YYYY/MM/DD');
+    var firtday = day.substring(0,8)+'/01';
+    var endday = day.substring(0,8)+'/31';
+    Accounts.aggregate([
+                        { $match: { "date": {"$gte" : firtday , "$lte" : endday}} },
+                        { $group: { _id: "$kind.code_no", total: { $sum: "$cash" } } },
+                        { $sort: { total: -1 } }
+                    ],function (err, docs) {
+                        if (err) {
+                            return callback(err);
+                        }
+                        return callback(null, docs);
+                    });
 };
 
 /**
