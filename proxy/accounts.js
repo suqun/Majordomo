@@ -61,20 +61,20 @@ exports.getAccountById = function (id, callback) {
  * - member, 成员
  * @param {Function} callback 回调函数
  */
-exports.getAccountSumByMonth = function (date, callback) {
+exports.getAccountSumByMonth = function (callback) {
     var day = new moment(new Date()).format('YYYY/MM/DD');
-    var firtday = day.substring(0,8)+'/01';
-    var endday = day.substring(0,8)+'/31';
-    Accounts.aggregate([
-                        { $match: { "date": {"$gte" : firtday , "$lte" : endday}} },
+    var firtday = day.substring(0,8)+"/01";
+    var endday = day.substring(0,8)+"/31";
+    Accounts.aggregate(
+                        { $match: { "date": {"$gte" : "2014/07/01" , "$lte" : "2014/07/15" }} },
                         { $group: { _id: "$kind.code_no", total: { $sum: "$cash" } } },
-                        { $sort: { total: -1 } }
-                    ],function (err, docs) {
-                        if (err) {
-                            return callback(err);
-                        }
-                        return callback(null, docs);
-                    });
+                        { $sort: { total: -1 } },
+                        function (err, docs) {
+                            if (err) {
+                                return callback(err);
+                            }
+                            return callback(null, docs);
+                        });
 };
 
 /**

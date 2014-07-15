@@ -18,7 +18,9 @@
         <div class="span12">
             <div class="jumbotron">
                 <h1> 亲爱的<%= locals.user.loginname%></h1>
-                <p class="lead">您本月支出：  <label style="color: #FF6666">159.00元</label>    收入：  <label style="color:#66CC66 ">0.00元</label></p>
+                <p class="lead">您本月支出：
+                    <label style="color: #FF6666"><%=payoutTotal%>元</label>
+                    收入：  <label style="color:#66CC66 "><%=incomeTotal%>元</label></p>
                 <p>
                     <a class="btn btn-lg btn-success" href="/accounts/monthly" role="button">查看本月统计</a>
                     <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">

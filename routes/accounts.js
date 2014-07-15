@@ -16,9 +16,20 @@ router.get('/index', function (req, res, next) {
         if (err) {
             return next(err);
         }
+        var payoutTotal = 0;
+        var incomeTotal = 0;
+        for(var i = 0 ; i < docs.length ; i++){
+            if(docs[i]._id === "payout") {
+                payoutTotal = docs[i].total.toFixed(2);
+            }
+            if(docs[i]._id === "income") {
+                incomeTotal = docs[i].total.toFixed(2);
+            }
+        }
         res.render('./accounts/accounts_index', {
             user : req.session.user,
-            docs : docs
+            payoutTotal : payoutTotal,
+            incomeTotal : incomeTotal
         });
     });
 });
