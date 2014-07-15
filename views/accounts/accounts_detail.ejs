@@ -28,17 +28,23 @@
             <!-- 搜索框 -->
             <div>
                 <form class="navbar-form navbar-left" role="search" method="post" action="/member/search">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" class="form-control" placeholder="请输入姓名">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="input-sm form-control" name="start" placeholder="开始日期"/>
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="input-sm form-control" name="end"  placeholder="结束日期"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="submit" class="btn btn-success btn-sm">查询</button>
+                        </div>
+
                     </div>
-                    <button type="submit" class="btn btn-success">查询</button>
                 </form>
             </div>
-
         </div>
-
         <div class="span12">
-            <!-- 列表-->
             <table class="table table-hover table-responsive panel panel-default">
                 <thead>
                 <tr>
@@ -65,7 +71,7 @@
                     <td><%= acc.type.code_value %> </td>
                     <%
                     if(acc.kind.code_no === 'payout'){
-                    %><td><label style="color: #FF6666"><%= acc.cash %></label></td><%
+                    %><td><label style="color: #FF6666">- <%= acc.cash %></label></td><%
                     } else {
                     %><td><label style="color: #66CC66"><%= acc.cash %></label></td><%
                     }
@@ -89,6 +95,7 @@
                  total_pages="<%= page.total_pages %>">
                 <ul id="page1" ></ul>
             </div>
+            <div class=" well well-sm">收入：<label style="color:#66CC66">0.00</label>元	&nbsp;&nbsp;&nbsp;&nbsp;支出：<label style="color: #FF6666">1259.00</label>元</div>
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <%include accounts_modify.ejs%>
@@ -137,6 +144,10 @@
             }
         }
         $('#page1').bootstrapPaginator(options);
+
+        $('#container .input-daterange').datepicker({
+            language: "zh-CN"
+        });
     });
 </script>
 
