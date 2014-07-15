@@ -63,18 +63,18 @@ exports.getAccountById = function (id, callback) {
  */
 exports.getAccountSumByMonth = function (callback) {
     var day = new moment(new Date()).format('YYYY/MM/DD');
-    var firtday = day.substring(0,8)+"/01";
-    var endday = day.substring(0,8)+"/31";
+    var month = day.substring(0,8);
+    var regexp  = new RegExp(month);
     Accounts.aggregate(
-                        { $match: { "date": {"$gte" : "2014/07/01" , "$lte" : "2014/07/15" }} },
-                        { $group: { _id: "$kind.code_no", total: { $sum: "$cash" } } },
-                        { $sort: { total: -1 } },
-                        function (err, docs) {
-                            if (err) {
-                                return callback(err);
-                            }
-                            return callback(null, docs);
-                        });
+        { $match: { "date": regexp} },
+        { $group: { _id: "$kind.code_no", total: { $sum: "$cash" } } },
+        { $sort: { total: -1 } },
+        function (err, docs) {
+            if (err) {
+                return callback(err);
+            }
+            return callback(null, docs);
+        });
 };
 
 /**
