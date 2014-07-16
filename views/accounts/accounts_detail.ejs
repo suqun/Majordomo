@@ -26,23 +26,27 @@
 
         <div class="span12">
             <!-- 搜索框 -->
-            <div>
-                <form class="navbar-form navbar-left" role="search" method="post" action="/member/search">
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" class="input-sm form-control" name="start" placeholder="开始日期"/>
-                                <span class="input-group-addon">to</span>
-                                <input type="text" class="input-sm form-control" name="end"  placeholder="结束日期"/>
-                            </div>
+            <form class="navbar-form navbar-left" role="search" method="get" action="/accounts/detail">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="input-daterange input-group" id="datepicker">
+                            <input type="text" class="input-sm form-control" name="start" id="start" value="<%=query.start%>" placeholder="开始日期"/>
+                            <span class="input-group-addon">to</span>
+                            <input type="text" class="input-sm form-control" name="end" id="end"  value="<%=query.end%>" placeholder="结束日期"/>
                         </div>
-                        <div class="col-xs-2">
-                            <button type="submit" class="btn btn-success btn-sm">查询</button>
-                        </div>
-
                     </div>
-                </form>
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-success btn-sm">查询</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row" >
+                <div class="col-xs-12">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;收入：<label style="color:#66CC66"><%=incomeTotal%></label>元
+                        &nbsp;&nbsp;&nbsp;&nbsp;支出：<label style="color: #FF6666"><%=payoutTotal%></label>元</p>
+                </div>
             </div>
+
         </div>
         <div class="span12">
             <table class="table table-hover table-responsive panel panel-default">
@@ -95,7 +99,6 @@
                  total_pages="<%= page.total_pages %>">
                 <ul id="page1" ></ul>
             </div>
-            <div class=" well well-sm">收入：<label style="color:#66CC66">0.00</label>元	&nbsp;&nbsp;&nbsp;&nbsp;支出：<label style="color: #FF6666">1259.00</label>元</div>
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <%include accounts_modify.ejs%>
@@ -128,6 +131,10 @@
         location.href = "/accounts/modifyPage?_id="+id;
     }
     $(function(){
+        //查询
+        var start = $('#start').val();
+        var end = $('#end').val();
+
         /** 分页 **/
         var $nav = $('#pagination');
         var current_page = $nav.attr('current_page');
@@ -140,13 +147,14 @@
             numberOfPages: number_of_pages,//每页显示数量
             totalPages: total_pages, //总页数
             pageUrl: function (type, page, current_page) {
-                return "/accounts/detail?current_page=" + page   ; //分页的链接,传递的参数为page
+                return "/accounts/detail?current_page=" + page + "?start=" + start + "?end=" + end; //分页的链接,传递的参数为page
             }
         }
         $('#page1').bootstrapPaginator(options);
 
         $('#container .input-daterange').datepicker({
-            language: "zh-CN"
+            language: "zh-CN",
+            format: "yyyy/mm/dd"
         });
     });
 </script>

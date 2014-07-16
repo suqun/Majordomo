@@ -3,7 +3,6 @@
  */
 var models = require('../models');
 var Accounts = models.Accounts;
-var moment = require('moment');
 
 /**
  * 根据关键词，获取记账列表
@@ -58,15 +57,13 @@ exports.getAccountById = function (id, callback) {
  * 获取当前月收入支出金额总和
  * Callback:
  * - err, 数据库错误
- * - member, 成员
+ * - docs, 统计数据数组
+ * @param qry
  * @param {Function} callback 回调函数
  */
-exports.getAccountSumByMonth = function (callback) {
-    var day = new moment(new Date()).format('YYYY/MM/DD');
-    var month = day.substring(0,8);
-    var regexp  = new RegExp(month);
+exports.getAccountSumByMonth = function (qry,callback) {
     Accounts.aggregate(
-        { $match: { "date": regexp} },
+        { $match: qry },
         { $group: { _id: "$kind.code_no", total: { $sum: "$cash" } } },
         { $sort: { total: -1 } },
         function (err, docs) {

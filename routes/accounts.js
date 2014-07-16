@@ -7,12 +7,18 @@ var Accounts = require('../proxy').Accounts;
 var SysCode = require('../proxy').SysCode;
 var EventProxy = require('eventproxy');
 var settings = require('../settings');
+var moment = require('moment');
 
 /**
  * 账本首页
  */
 router.get('/index', function (req, res, next) {
-    Accounts.getAccountSumByMonth(function (err,docs) {
+    var day = new moment(new Date()).format('YYYY/MM/DD');
+    var month = day.substring(0,8);
+    var regexp  = new RegExp(month);
+    var qry = { "date": regexp};
+
+    Accounts.getAccountSumByMonth(qry,function (err,docs) {
         if (err) {
             return next(err);
         }
@@ -58,11 +64,36 @@ router.get('/detail', function (req, res, next) {
     var current_page = parseInt(req.query.current_page, 10) || 1;
     var limit = settings.number_of_pages;
 
-    var proxy = EventProxy.create('accounts','page',
-        function (accounts, page) {
+    //查询时间默认当前月
+    var day = new moment(new Date()).format('YYYY/MM/DD');
+    var query = {start:req.query.start,end:req.query.end};
+    if (undefined == query.start) {
+        query.start = day.substring(0,8)+"01";
+    }
+    if (undefined == query.end) {
+        query.end = day;
+    }
+
+    var proxy = EventProxy.create('accounts','sum','page',
+        function (accounts,sum,page) {
+
+            var payoutTotal = 0;
+            var incomeTotal = 0;
+            for(var i = 0 ; i < sum.length ; i++){
+                if(sum[i]._id === "payout") {
+                    payoutTotal = sum[i].total.toFixed(2);
+                }
+                if(sum[i]._id === "income") {
+                    incomeTotal = sum[i].total.toFixed(2);
+                }
+            }
             res.render('./accounts/accounts_detail', {
                 accounts: accounts,
-                page: page// 总记录数
+                page: page,// 总记录数
+                query: query,
+                payoutTotal : payoutTotal,
+                incomeTotal : incomeTotal
+
             });
         });
     proxy.fail(next);
@@ -71,13 +102,22 @@ router.get('/detail', function (req, res, next) {
     var col = {_id:1,date:1,kind:1,type:1,cash:1,account:1,remark:1};
     var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-date',col:col};
 
-    Accounts.getAccountsByQuery({}, options, proxy.done('accounts', function (accounts) {
+    // 查询
+    var qry = {date: {"$gte": query.start,"$lte": query.end}};
+
+    Accounts.getAccountsByQuery(qry, options, proxy.done('accounts', function (accounts) {
 
         return accounts;
     }));
 
+    //统计金额
+    Accounts.getAccountSumByMonth(qry, proxy.done('sum', function (sum) {
+
+        return sum;
+    }));
+
     // 取分页数据
-    Accounts.getCountByQuery({}, proxy.done(function (all_accounts_count) {
+    Accounts.getCountByQuery(qry, proxy.done(function (all_accounts_count) {
         var total_pages = Math.ceil(all_accounts_count / limit);
         var page = {};
         page.current_page = current_page;
