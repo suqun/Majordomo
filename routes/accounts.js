@@ -16,9 +16,11 @@ router.get('/index', function (req, res, next) {
     var day = new moment(new Date()).format('YYYY/MM/DD');
     var month = day.substring(0,8);
     var regexp  = new RegExp(month);
-    var qry = { "date": regexp};
 
-    Accounts.getAccountSumByMonth(qry,function (err,docs) {
+    var match = { "date": regexp};
+    var group = { _id: "$kind.code_no", total: { $sum: "$cash" } };
+    var sort = {total: -1 };
+    Accounts.getAccountAggregate(match,group,sort,function (err,docs) {
         if (err) {
             return next(err);
         }
@@ -111,7 +113,10 @@ router.get('/detail', function (req, res, next) {
     }));
 
     //统计金额
-    Accounts.getAccountSumByMonth(qry, proxy.done('sum', function (sum) {
+    var match = qry;
+    var group = { _id: "$kind.code_no", total: { $sum: "$cash" } };
+    var sort = {total: -1 };
+    Accounts.getAccountAggregate(match,group,sort, proxy.done('sum', function (sum) {
 
         return sum;
     }));
@@ -197,8 +202,36 @@ router.post('/modify',function(req, res){
  * 月度统计
  */
 router.get('/monthly', function (req, res, next) {
-    res.render('./accounts/accounts_monthly', {
-        user:req.session.user
+    var day = new moment(new Date()).format('YYYY/MM/DD');
+    var month = day.substring(0,8);
+    var regexp  = new RegExp(month);
+
+    var match = { "date": regexp,"kind.code_no": "payout"};
+    var group = { _id: {code_no: "$type.code_no", code_value: "$type.code_value"} ,total: { $sum: "$cash" } };
+    var sort = {total: -1 };
+    Accounts.getAccountAggregate(match,group,sort,function (err,docs) {
+        if (err) {
+            return next(err);
+        }
+        //docs数据组装成hightcharts结构
+        var data = [];
+        var sum = 0;
+        for(var i = 0 ; i < docs.length ; i++){
+            sum += docs[i].total;
+        }
+        for(var i = 0 ; i < docs.length ; i++){
+            var d = [];
+            d.push(docs[i]._id.code_value);
+            d.push((docs[i].total/sum).toFixed(2));
+            data.push(d);
+            data.push("|");
+        }
+        data.splice(data.length-1,1);
+
+        res.render('./accounts/accounts_monthly', {
+            user : req.session.user,
+            data : data
+        });
     });
 });
 

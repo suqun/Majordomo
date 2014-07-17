@@ -15,9 +15,15 @@
                 <li class="active"><a href="/accounts/monthly">月度统计</a></li>
             </ul>
         </div>
-        <div class="span12">
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <input type="text" type="text" class="form-control" id="datepicker" placeholder="请选择月份" />
+            </div>
 
-
+            <div class="col-md-12">
+                <div id="chart_container" data = <%=data%> style="min-width:700px;height:400px"></div>
+            </div>
 
         </div>
         <div class="span12">
@@ -38,9 +44,61 @@
 </div>
 
 <script>
-    $(function(){
+    $(function () {
+        var $nav = $('#chart_container');
+        var data = $nav.attr('data');
+        var arr = data.split(',|,');
+        var dataFormat = '[';
+        for(var i = 0; i < arr.length; i++){
+            var d = arr[i].split(',');
+            var str = "['" + d[0] + "'," + d[1] + "],";
+            dataFormat += str;
+        }
+        dataFormat = dataFormat.substring(0,dataFormat.length-1);
+        dataFormat += ']';
 
+        $('#chart_container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '月度支出统计'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'payout',
+                data:  dataFormat
+            }]
+        });
+
+
+        $('#datepicker').datepicker({
+            format: "yyyy年mm月",
+            startView: 1,
+            minViewMode: 1,
+            language: "zh-CN"
+        });
     });
 </script>
+<script type="text/javascript" src="/javascripts/highcharts_4.0.1/highcharts.js"></script>
+<script type="text/javascript" src="/javascripts/highcharts_4.0.1/modules/exporting.js"></script>
+<script type="text/javascript" src="/javascripts/highcharts_4.0.1/highcharts-3d.js"></script>
 
 <% include ../footer.ejs %>

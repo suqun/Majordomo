@@ -54,18 +54,20 @@ exports.getAccountById = function (id, callback) {
 };
 
 /**
- * 获取当前月收入支出金额总和
+ * 聚合查询
  * Callback:
  * - err, 数据库错误
  * - docs, 统计数据数组
- * @param qry
+ * @param match
+ * @param group
+ * @param sort
  * @param {Function} callback 回调函数
  */
-exports.getAccountSumByMonth = function (qry,callback) {
+exports.getAccountAggregate = function (match,group,sort,callback) {
     Accounts.aggregate(
-        { $match: qry },
-        { $group: { _id: "$kind.code_no", total: { $sum: "$cash" } } },
-        { $sort: { total: -1 } },
+        { $match: match },
+        { $group: group },
+        { $sort: sort},
         function (err, docs) {
             if (err) {
                 return callback(err);
