@@ -14,10 +14,10 @@ var moment = require('moment');
  */
 router.get('/index', function (req, res, next) {
     var day = new moment(new Date()).format('YYYY/MM/DD');
-    var month = day.substring(0,8);
+    var month = day.substring(0,7);
     var regexp  = new RegExp(month);
 
-    var match = { "date": regexp};
+    var match = { "date": regexp,"user_id":req.session.user._id};
     var group = { _id: "$kind.code_no", total: { $sum: "$cash" } };
     var sort = {total: -1 };
     Accounts.getAccountAggregate(match,group,sort,function (err,docs) {
@@ -105,7 +105,7 @@ router.get('/detail', function (req, res, next) {
     var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-date',col:col};
 
     // 查询
-    var qry = {date: {"$gte": query.start,"$lte": query.end}};
+    var qry = {user_id:req.session.user._id,date: {"$gte": query.start,"$lte": query.end}};
 
     Accounts.getAccountsByQuery(qry, options, proxy.done('accounts', function (accounts) {
 
@@ -211,7 +211,7 @@ router.get('/monthly', function (req, res, next) {
     }
     var regexp  = new RegExp(month);
 
-    var match = { "date": regexp,"kind.code_no": "payout"};
+    var match = { "date": regexp,"kind.code_no": "payout","user_id":req.session.user._id};
     var group = { _id: {code_no: "$type.code_no", code_value: "$type.code_value"} ,total: { $sum: "$cash" } };
     var sort = {total: -1 };
     Accounts.getAccountAggregate(match,group,sort,function (err,docs) {

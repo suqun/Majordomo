@@ -77,13 +77,21 @@
                 </div>
                 <p class="help-block text-center"><small>We won't send you spam. Unsubscribe at any time.</small></p>
             </form>
-
-
-
-
-
+            <% if ( locals.success ) {  %>
+            <div class="alert alert-success"> <%= locals.success %></div>
+            <% } %>
+            <% if ( locals.error ) { %>
+            <div class="alert alert-danger "> <%= locals.error %></div>
+            <% } %>
         </div><!-- //main content -->
     </div><!-- //row -->
 </div> <!-- //container -->
 
-<% include ../footer.ejs%>
+
+<!-- Bootstrap core JavaScript
+==================================================
+<script src="/javascripts/jquery-2.0.3.js"></script>-->
+<script src="/javascripts/bootstrap.js"></script>
+</body>
+</html>
+

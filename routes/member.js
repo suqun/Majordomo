@@ -29,7 +29,8 @@ router.get('/index', function (req, res, next) {
         waistline:1,shoeSize:1,comments:1,create_at:1};
     var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-create_at',col:col};
 
-    Member.getMembersByQuery({}, options, proxy.done('members', function (members) {
+    var qry = {create_un:req.session.user.name};
+    Member.getMembersByQuery(qry, options, proxy.done('members', function (members) {
         //日期格式化 有空再看看如何查询数据库的时候进行格式化，省掉循环
         for(var i=0; i<members.length;i++){
             var member = members[i];
@@ -90,7 +91,9 @@ router.get('/modifyPage', function (req, res, next) {
         waistline:1,shoeSize:1,comments:1,create_at:1};
     var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-create_at',col:col};
 
-    Member.getMembersByQuery({}, options, proxy.done('members', function (members) {
+    var qry = {create_un:req.session.user.name};
+
+    Member.getMembersByQuery(qry, options, proxy.done('members', function (members) {
         //日期格式化 有空再看看如何查询数据库的时候进行格式化，省掉循环
         for(var i=0; i<members.length;i++){
             var member = members[i];
