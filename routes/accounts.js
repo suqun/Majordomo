@@ -115,7 +115,7 @@ router.get('/detail', function (req, res, next) {
     //统计金额
     var match = qry;
     var group = { _id: "$kind.code_no", total: { $sum: "$cash" } };
-    var sort = {};
+    var sort = {total: -1 };
     Accounts.getAccountAggregate(match,group,sort, proxy.done('sum', function (sum) {
 
         return sum;
@@ -202,8 +202,13 @@ router.post('/modify',function(req, res){
  * 月度统计
  */
 router.get('/monthly', function (req, res, next) {
-    var day = new moment(new Date()).format('YYYY/MM/DD');
-    var month = day.substring(0,8);
+    var month;
+    if(undefined === req.query.month){
+        var day = new moment(new Date()).format('YYYY/MM/DD');
+        month = day.substring(0,7);
+    }else{
+        month = req.query.month;
+    }
     var regexp  = new RegExp(month);
 
     var match = { "date": regexp,"kind.code_no": "payout"};
@@ -218,27 +223,36 @@ router.get('/monthly', function (req, res, next) {
         var data_column = [];//柱状图数据
         var data_xAxis =[];//柱状图x轴
 
-        var sum = 0;
-        for(var i = 0 ; i < docs.length ; i++){
-            sum += docs[i].total;
-        }
-        for(var i = 0 ; i < docs.length ; i++){
-            var d = [];
-            d.push(docs[i]._id.code_value);
-            d.push((docs[i].total/sum).toFixed(2));
-            data_pie.push(d);
-            data_pie.push("|");
+        var docslength ;
+        if(docs.length == 0){
+            docslength = 0;
+        }else{
+            docslength = docs.length;
 
-            data_xAxis.push(docs[i]._id.code_value);
-            data_column.push(docs[i].total);
-        }
+            var sum = 0;
+            for(var i = 0 ; i < docs.length ; i++){
+                sum += docs[i].total;
+            }
+            for(var i = 0 ; i < docs.length ; i++){
+                var d = [];
+                d.push(docs[i]._id.code_value);
+                d.push((docs[i].total/sum).toFixed(2));
+                data_pie.push(d);
+                data_pie.push("|");
 
-        data_pie.splice(data_pie.length-1,1);
+                data_xAxis.push(docs[i]._id.code_value);
+                data_column.push(docs[i].total);
+            }
+
+            data_pie.splice(data_pie.length-1,1);
+        }
 
         res.render('./accounts/accounts_monthly', {
             data_pie : data_pie,
             data_column : data_column,
-            data_xAxis : data_xAxis
+            data_xAxis : data_xAxis,
+            month : month,
+            docslength : docslength
         });
     });
 });

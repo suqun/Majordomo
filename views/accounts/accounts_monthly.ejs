@@ -18,19 +18,24 @@
         <br>
         <div class="row">
             <div class="col-md-2">
-                <input type="text" type="text" class="form-control" id="datepicker" placeholder="请选择月份" />
+                <input type="text" type="text" class="form-control" id="datepicker" value="<%=month%>" onchange="search()" placeholder="请选择月份" />
             </div>
-
-            <div class="col-md-12">
-                <div id="chart_container" data = <%=data_pie%> style="min-width:700px;height:400px"></div>
-            </div>
-
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div id="chart_column_container" column= <%=data_column%> xAxis= <%=data_xAxis%>
-                style="min-width:700px;height:400px"></div>
+        <div id="chart">
+            <div class="row">
+                <div class="col-md-12" >
+                    <div id="chart_container" data = <%=data_pie%> style="min-width:700px;height:400px"></div>
+                </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="chart_column_container" column= <%=data_column%> xAxis= <%=data_xAxis%>
+                         style="min-width:700px;height:400px"></div>
+                </div>
+            </div>
+        </div>
+        <div id="info" docslength="<%=docslength%>" class="jumbotron">
+            <h1> <%=month%>没有支出数据，无法统计！</h1>
         </div>
         <div class="span12">
             <div class="page-header">
@@ -50,7 +55,8 @@
 </div>
 
 <script>
-    function createChart(){
+    /*饼图*/
+    function createPieChart(){
         var $nav = $('#chart_container');
         var data = $nav.attr('data');
         var arr = data.split(',|,');
@@ -61,7 +67,7 @@
             dataArray.push(d);
         }
 
-        var chart = new Highcharts.Chart({
+        var chartPie = new Highcharts.Chart({
             chart: {
                 renderTo: 'chart_container',
                 plotBackgroundColor: null,
@@ -97,6 +103,7 @@
         });
     }
 
+    /*柱状图*/
     function createColumnChart(){
         var $nav = $('#chart_column_container');
         var column = $nav.attr('column');
@@ -114,7 +121,7 @@
             xAxisArray.push(arr_xAxis[i]);
         }
 
-        var chart = new Highcharts.Chart({
+        var chartColumn = new Highcharts.Chart({
             chart: {
                 renderTo: 'chart_column_container',
                 type: 'column',
@@ -152,36 +159,37 @@
 
     }
 
-    function showValues() {
-        $('#R0-value').html(chart.options.chart.options3d.alpha);
-        $('#R1-value').html(chart.options.chart.options3d.beta);
+    //根据月份查询统计
+    function search(){
+        var month = $("#datepicker").val();
+        location.href = "/accounts/monthly?month="+month;
     }
 
     $(function () {
-        /*饼图*/
-        createChart();
         /*时间格式化*/
         $('#datepicker').datepicker({
-            format: "yyyy年mm月",
+            format: "yyyy/mm",
             startView: 1,
             minViewMode: 1,
             language: "zh-CN"
         });
-        /*柱状图*/
-        // Set up the chart
-        createColumnChart();
-        // Activate the sliders
-        $('#R0').on('change', function(){
-            chart.options.chart.options3d.alpha = this.value;
-            showValues();
-            chart.redraw(false);
-        });
-        $('#R1').on('change', function(){
-            chart.options.chart.options3d.beta = this.value;
-            showValues();
-            chart.redraw(false);
-        });
-        showValues();
+
+        /*判断是否有支出数据可以统计*/
+        var $chart = $('#chart');
+        var $nav = $('#info');
+        $nav.hide();
+        $chart.hide();
+        var docslength = $nav.attr('docslength');
+        if(docslength != "0"){
+            $chart.show();
+            //饼图
+            createPieChart();
+            //柱状图
+            createColumnChart();
+        }else{
+            $nav.show();
+        }
+
     });
 </script>
 <script type="text/javascript" src="/javascripts/highcharts_4.0.1/highcharts.js"></script>
