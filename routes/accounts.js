@@ -115,7 +115,7 @@ router.get('/detail', function (req, res, next) {
     //统计金额
     var match = qry;
     var group = { _id: "$kind.code_no", total: { $sum: "$cash" } };
-    var sort = {total: -1 };
+    var sort = {};
     Accounts.getAccountAggregate(match,group,sort, proxy.done('sum', function (sum) {
 
         return sum;
@@ -214,7 +214,10 @@ router.get('/monthly', function (req, res, next) {
             return next(err);
         }
         //docs数据组装成hightcharts结构
-        var data = [];
+        var data_pie = [];// 饼图数据
+        var data_column = [];//柱状图数据
+        var data_xAxis =[];//柱状图x轴
+
         var sum = 0;
         for(var i = 0 ; i < docs.length ; i++){
             sum += docs[i].total;
@@ -223,14 +226,19 @@ router.get('/monthly', function (req, res, next) {
             var d = [];
             d.push(docs[i]._id.code_value);
             d.push((docs[i].total/sum).toFixed(2));
-            data.push(d);
-            data.push("|");
+            data_pie.push(d);
+            data_pie.push("|");
+
+            data_xAxis.push(docs[i]._id.code_value);
+            data_column.push(docs[i].total);
         }
-        data.splice(data.length-1,1);
+
+        data_pie.splice(data_pie.length-1,1);
 
         res.render('./accounts/accounts_monthly', {
-            user : req.session.user,
-            data : data
+            data_pie : data_pie,
+            data_column : data_column,
+            data_xAxis : data_xAxis
         });
     });
 });

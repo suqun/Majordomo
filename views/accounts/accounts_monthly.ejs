@@ -22,9 +22,15 @@
             </div>
 
             <div class="col-md-12">
-                <div id="chart_container" data = <%=data%> style="min-width:700px;height:400px"></div>
+                <div id="chart_container" data = <%=data_pie%> style="min-width:700px;height:400px"></div>
             </div>
 
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="chart_column_container" column= <%=data_column%> xAxis= <%=data_xAxis%>
+                style="min-width:700px;height:400px"></div>
+            </div>
         </div>
         <div class="span12">
             <div class="page-header">
@@ -44,27 +50,29 @@
 </div>
 
 <script>
-    $(function () {
+    function createChart(){
         var $nav = $('#chart_container');
         var data = $nav.attr('data');
         var arr = data.split(',|,');
-        var dataFormat = '[';
+        var dataArray = [];
         for(var i = 0; i < arr.length; i++){
             var d = arr[i].split(',');
-            var str = "['" + d[0] + "'," + d[1] + "],";
-            dataFormat += str;
+            d[1] = Number(d[1]);
+            dataArray.push(d);
         }
-        dataFormat = dataFormat.substring(0,dataFormat.length-1);
-        dataFormat += ']';
 
-        $('#chart_container').highcharts({
+        var chart = new Highcharts.Chart({
             chart: {
+                renderTo: 'chart_container',
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false
             },
             title: {
-                text: '月度支出统计'
+                text: '月度支出汇总'
+            },
+            subtitle: {
+                text: '根据支出类型的账目分类进行统计'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -83,18 +91,97 @@
             },
             series: [{
                 type: 'pie',
-                name: 'payout',
-                data:  dataFormat
+                name: 'share',
+                data:  dataArray
+            }]
+        });
+    }
+
+    function createColumnChart(){
+        var $nav = $('#chart_column_container');
+        var column = $nav.attr('column');
+        var xAxis = $nav.attr('xAxis');
+        /*组装柱状图series数据*/
+        var columnArray = [];
+        var arr_column = column.split(',');
+        for(var i = 0; i < arr_column.length; i++){
+            columnArray.push(Number(arr_column[i]));
+        }
+        /*组装x轴数据*/
+        var xAxisArray = [];
+        var arr_xAxis = xAxis.split(',');
+        for(var i = 0; i < arr_xAxis.length; i++){
+            xAxisArray.push(arr_xAxis[i]);
+        }
+
+        var chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'chart_column_container',
+                type: 'column',
+                margin: 75,
+                options3d: {
+                    enabled: true,
+                    alpha: 15,
+                    beta: 15,
+                    depth: 50,
+                    viewDistance: 25
+                }
+            },
+            title: {
+                text: '支出明细汇总'
+            },
+            subtitle: {
+                text: '根据支出类型的账目分类进行统计'
+            },
+            plotOptions: {
+                column: {
+                    depth: 25
+                }
+            },
+            xAxis: {
+                categories: xAxisArray
+            },
+            yAxis: {
+                opposite: false
+            },
+            series: [{
+                name: '支出',
+                data: columnArray
             }]
         });
 
+    }
 
+    function showValues() {
+        $('#R0-value').html(chart.options.chart.options3d.alpha);
+        $('#R1-value').html(chart.options.chart.options3d.beta);
+    }
+
+    $(function () {
+        /*饼图*/
+        createChart();
+        /*时间格式化*/
         $('#datepicker').datepicker({
             format: "yyyy年mm月",
             startView: 1,
             minViewMode: 1,
             language: "zh-CN"
         });
+        /*柱状图*/
+        // Set up the chart
+        createColumnChart();
+        // Activate the sliders
+        $('#R0').on('change', function(){
+            chart.options.chart.options3d.alpha = this.value;
+            showValues();
+            chart.redraw(false);
+        });
+        $('#R1').on('change', function(){
+            chart.options.chart.options3d.beta = this.value;
+            showValues();
+            chart.redraw(false);
+        });
+        showValues();
     });
 </script>
 <script type="text/javascript" src="/javascripts/highcharts_4.0.1/highcharts.js"></script>
