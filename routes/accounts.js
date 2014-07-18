@@ -8,6 +8,7 @@ var SysCode = require('../proxy').SysCode;
 var EventProxy = require('eventproxy');
 var settings = require('../settings');
 var moment = require('moment');
+var mongoose = require('mongoose');
 
 /**
  * 账本首页
@@ -17,7 +18,7 @@ router.get('/index', function (req, res, next) {
     var month = day.substring(0,7);
     var regexp  = new RegExp(month);
 
-    var match = { "date": regexp,"user_id":req.session.user._id};
+    var match = { "date": regexp,"user_id": mongoose.Types.ObjectId(req.session.user._id)};
     var group = { _id: "$kind.code_no", total: { $sum: "$cash" } };
     var sort = {total: -1 };
     Accounts.getAccountAggregate(match,group,sort,function (err,docs) {
@@ -211,7 +212,7 @@ router.get('/monthly', function (req, res, next) {
     }
     var regexp  = new RegExp(month);
 
-    var match = { "date": regexp,"kind.code_no": "payout","user_id":req.session.user._id};
+    var match = { "date": regexp,"kind.code_no": "payout","user_id": mongoose.Types.ObjectId(req.session.user._id)};
     var group = { _id: {code_no: "$type.code_no", code_value: "$type.code_value"} ,total: { $sum: "$cash" } };
     var sort = {total: -1 };
     Accounts.getAccountAggregate(match,group,sort,function (err,docs) {
