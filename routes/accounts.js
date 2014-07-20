@@ -106,7 +106,7 @@ router.get('/detail', function (req, res, next) {
     var options = {skip: (current_page - 1) * limit, limit: limit, sort: '-date',col:col};
 
     // 查询
-    var qry = {user_id:req.session.user._id,date: {"$gte": query.start,"$lte": query.end}};
+    var qry = {"user_id": mongoose.Types.ObjectId(req.session.user._id),date: {"$gte": query.start,"$lte": query.end}};
 
     Accounts.getAccountsByQuery(qry, options, proxy.done('accounts', function (accounts) {
 
