@@ -38,9 +38,9 @@ app.use(function (req, res, next) {
     var url = req.originalUrl;
 
     //简单地定义一个登录拦截器,正则表达式拦截路径/memmber/,/accounts/,/health/,/plan/,/diary/
-    var regexp = new RegExp("\/member\/|\/accounts\/|\/health\/|\/plan\/|\/diary\/", "g");
+    var regexp = new RegExp("\/member\/|\/accounts\/|\/health\/|\/plan\/|\/blog\/", "g");
     if (regexp.test(url) && !req.session.user) {
-        console.log("尚未登录");
+        req.flash('error', '尚未登录');
         return res.redirect("/users/login");
         //return res.send(403, 'forbidden!');
     }
