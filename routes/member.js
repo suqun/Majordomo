@@ -95,10 +95,9 @@ router.get('/modifyPage', function (req, res, next) {
 
     Member.getMembersByQuery(qry, options, proxy.done('members', function (members) {
         //日期格式化 有空再看看如何查询数据库的时候进行格式化，省掉循环
-        for(var i=0; i<members.length;i++){
-            var member = members[i];
+        members.forEach(function(member){
             member.create_at_str = new moment(members[i].create_at).format('YYYY/MM/DD');
-        }
+        });
         return members;
     }));
 

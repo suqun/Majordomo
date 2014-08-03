@@ -3,7 +3,6 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 
 var PostSchema = new Schema({
     head : {type: String},

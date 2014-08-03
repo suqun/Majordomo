@@ -21,6 +21,7 @@
     "mathjs":"~0.21.1",
     "moment":"~2.6.0",
     "gm":"~1.16.0",
-    "eventproxy": "0.2.6"
+    "eventproxy": "0.2.6",
+    "markdown":"*"
   }
 }

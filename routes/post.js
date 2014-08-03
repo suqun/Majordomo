@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var Post = require('../proxy').Post;
 var moment = require('moment');
+var markdown = require('markdown').markdown;
 
 /**
  * 博客首页
@@ -16,6 +17,10 @@ router.get('/index', function (req, res, next) {
         if (err) {
             return next(err);
         }
+        posts.forEach(function(p){
+            p.post = markdown.toHTML(p.post);
+            p.create_at_str = new moment(p.create_at).format('YYYY-MM-DD HH:mm:ss');
+        });
         res.render('./post/home', {
             posts : posts
         });

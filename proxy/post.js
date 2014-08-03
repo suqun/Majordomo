@@ -10,7 +10,6 @@ var Post = models.Post;
  * - err, 数据库错误
  * - count, 博客列表
  * @param {String} qry 搜索关键词
- * @param {Object} opt 搜索选项
  * @param {Function} callback 回调函数
  */
 exports.getPostsByQuery = function (qry, callback) {
