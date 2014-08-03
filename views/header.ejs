@@ -57,9 +57,9 @@
                     %><li class="active"><%}else{%><li><%}%><a href="#plan">计划</a></li>
 
                     <%
-                    var regexp  = new RegExp("\/blog\/", "g");
+                    var regexp  = new RegExp("\/post\/", "g");
                     if(locals.url && regexp.test(url)){
-                    %><li class="active"><%}else{%><li><%}%><a href="#blog">博客</a></li>
+                    %><li class="active"><%}else{%><li><%}%><a href="/post/index">博客</a></li>
 
 
                 </ul>
