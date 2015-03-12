@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(flash());
+//app.use(express.favicon(__dirname + '/public/images/S.jpg'));
 app.use(session({
     secret: settings.cookie_secret,
     store: new MongoStore({

@@ -22,6 +22,7 @@
     "moment":"~2.6.0",
     "gm":"~1.16.0",
     "eventproxy": "0.2.6",
-    "markdown":"*"
+    "markdown-it": "3.0.3",
+     "ejs-mate": "2.0.0"
   }
 }

@@ -5,7 +5,9 @@ var express = require('express');
 var router = express.Router();
 var Post = require('../proxy').Post;
 var moment = require('moment');
-var markdown = require('markdown').markdown;
+var renderHelper = require('../common/render_helper');
+
+
 
 /**
  * 博客首页
@@ -18,7 +20,8 @@ router.get('/index', function (req, res, next) {
             return next(err);
         }
         posts.forEach(function(p){
-            p.post = markdown.toHTML(p.post);
+            //p.post = markdown.toHTML(p.post);
+            //p.post= renderHelper.markdown(p.post);
             p.create_at_str = new moment(p.create_at).format('YYYY-MM-DD HH:mm:ss');
         });
         res.render('./post/home', {
@@ -32,6 +35,7 @@ router.get('/index', function (req, res, next) {
  * 添加博客
  */
 router.post('/add',function(req, res){
+
     Post.newAndSave(req.body.head,req.body.title,req.body.tags, req.body.post,req.session.user.loginname, function (err, post) {
             if (err) {
                 req.flash('error', err);
