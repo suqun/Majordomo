@@ -12,8 +12,8 @@ var Post = models.Post;
  * @param {String} qry 搜索关键词
  * @param {Function} callback 回调函数
  */
-exports.getPostsByQuery = function (qry, callback) {
-    var query = Post.find(qry);
+exports.getPostsByQuery = function (qry, opt,callback) {
+    var query = Post.find(qry).sort(opt.sort);
 
     query.exec(function (err, accounts) {
         if (err) {

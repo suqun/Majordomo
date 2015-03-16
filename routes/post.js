@@ -15,13 +15,14 @@ var renderHelper = require('../common/render_helper');
 router.get('/index', function (req, res, next) {
     //var qry = {user_id:mongoose.Types.ObjectId(req.session.user._id)};
     var qry = {};
-    Post.getPostsByQuery(qry,function(err,posts){
+    var options = {sort: '-create_at'};
+    Post.getPostsByQuery(qry,options,function(err,posts){
         if (err) {
             return next(err);
         }
         posts.forEach(function(p){
             //p.post = markdown.toHTML(p.post);
-            //p.post= renderHelper.markdown(p.post);
+            p.post= renderHelper.markdown(p.post);
             p.create_at_str = new moment(p.create_at).format('YYYY-MM-DD HH:mm:ss');
         });
         res.render('./post/home', {
